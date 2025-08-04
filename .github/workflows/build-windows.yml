@@ -35,11 +35,20 @@ jobs:
 
     - name: Build EXE with PyInstaller
       run: |
-        uvx pyinstaller --onefile --windowed --name="fox-tools" --icon=icon.png gui.py
+        uvx pyinstaller --onefile --windowed --name="fox-tools" --icon=icon.ico gui.py
 
     - name: Upload artifact (EXE)
       uses: actions/upload-artifact@v4
       with:
         name: fox-tools
         path: dist/fox-tools.exe
+
+    - name: Release EXE to GitHub
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v1.0.${{ github.run_number }}
+        name: fox-tools v1.0.${{ github.run_number }}
+        files: dist/fox-tools.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
