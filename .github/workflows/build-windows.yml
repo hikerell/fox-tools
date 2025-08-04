@@ -29,7 +29,7 @@ jobs:
 
     - name: Build EXE with PyInstaller
       run: |
-        pyinstaller --onefile --windowed --name="fox-tools" --icon=icon.png email_sender.py
+        pyinstaller --onefile --windowed --name="fox-tools" --icon=icon.png gui.py
 
     - name: Upload artifact (EXE)
       uses: actions/upload-artifact@v4
