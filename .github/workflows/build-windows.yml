@@ -26,6 +26,7 @@ jobs:
     - name: Install dependencies via uv
       run: |
         uv sync
+        uv add pillow
 
     - name: Debug Python info
       run: |
