@@ -6,7 +6,7 @@ a = Analysis(
     pathex=[],
     binaries=[],
     datas=[],
-    hiddenimports=[],
+    hiddenimports=["openpyxl", "pandas", "pillow"],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='fox tools',
+    name='fox-tools',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -35,11 +35,11 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['icon.png'],
+    icon=['icon.ico'],
 )
 app = BUNDLE(
     exe,
-    name='fox tools.app',
-    icon='icon.png',
+    name='fox-tools.app',
+    icon='icon.ico',
     bundle_identifier=None,
 )

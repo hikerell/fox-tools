@@ -11,44 +11,40 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Setup Python 3.13
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.13'
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
 
-    - name: Install uv
-      run: |
-        pip install uv
+      - name: Install uv
+        run: |
+          pip install uv
 
-    - name: Install dependencies via uv
-      run: |
-        uv sync
-        uv add pillow
+      - name: Install dependencies via uv
+        run: |
+          uv sync
 
-    - name: Debug Python info
-      run: |
-        uv python --version
-        uv pip show pyinstaller
+      - name: Debug Python info
+        run: |
+          uv pip show pyinstaller
 
-    - name: Build EXE with PyInstaller
-      run: |
-        uvx pyinstaller --onefile --windowed --name="fox-tools" --icon=icon.ico gui.py
+      - name: Build EXE with PyInstaller
+        run: |
+          uvx pyinstaller --clean -y fox-tools.spec --log-level=DEBUG
 
-    - name: Upload artifact (EXE)
-      uses: actions/upload-artifact@v4
-      with:
-        name: fox-tools
-        path: dist/fox-tools.exe
-
-    - name: Release EXE to GitHub
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: v1.0.${{ github.run_number }}
-        name: fox-tools v1.0.${{ github.run_number }}
-        files: dist/fox-tools.exe
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Upload artifact (EXE)
+        uses: actions/upload-artifact@v4
+        with:
+          name: fox-tools
+          path: dist/fox-tools.exe
+# - name: Release EXE to GitHub
+#   uses: softprops/action-gh-release@v2
+#   with:
+#     tag_name: v1.0.${{ github.run_number }}
+#     name: fox-tools v1.0.${{ github.run_number }}
+#     files: dist/fox-tools.exe
+#   env:
+#     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
