@@ -14,7 +14,7 @@ import pandas as pd
 class EmailSenderGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("令狐会展科技批量邮件发送工具")
+        self.root.title("灵狐会展科技 - 邮件群发")
         self.root.geometry("900x750")
         self.root.resizable(True, True)
 
@@ -52,7 +52,7 @@ class EmailSenderGUI:
         ttk.Label(
             sender_frame,
             text=f"{self.smtp_server_value}:{self.smtp_port_value}",
-            foreground="white",
+            # foreground="white",
         ).grid(row=0, column=1, sticky=tk.W)
 
         ttk.Label(sender_frame, text="发件人邮箱:").grid(
@@ -81,7 +81,8 @@ class EmailSenderGUI:
             row=0, column=0, sticky=tk.W, padx=(0, 5)
         )
         self.chinese_name = ttk.Entry(name_frame)
-        self.chinese_name.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(0, 20))
+        self.chinese_name.grid(
+            row=0, column=1, sticky=(tk.W, tk.E), padx=(0, 20))
 
         ttk.Label(name_frame, text="员工英文名:").grid(
             row=0, column=2, sticky=tk.W, padx=(0, 5)
@@ -99,7 +100,8 @@ class EmailSenderGUI:
 
         # 收件人输入方式选择
         input_method_frame = ttk.Frame(receivers_frame)
-        input_method_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 5))
+        input_method_frame.grid(
+            row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 5))
 
         self.input_method = tk.StringVar(value="manual")
         ttk.Radiobutton(
@@ -133,12 +135,14 @@ class EmailSenderGUI:
         )
         self.file_button.pack(side=tk.LEFT)
 
-        self.file_info_label = ttk.Label(file_info_frame, text="", foreground="gray")
+        self.file_info_label = ttk.Label(
+            file_info_frame, text="", foreground="gray")
         self.file_info_label.pack(side=tk.LEFT, padx=(10, 0))
 
         # 收件人文本框
         receivers_text_frame = ttk.Frame(receivers_frame)
-        receivers_text_frame.grid(row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        receivers_text_frame.grid(
+            row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         receivers_text_frame.columnconfigure(0, weight=1)
         receivers_text_frame.rowconfigure(1, weight=1)
 
@@ -147,8 +151,10 @@ class EmailSenderGUI:
         )
         self.receivers_label.grid(row=0, column=0, sticky=tk.W, pady=(0, 5))
 
-        self.receivers_text = scrolledtext.ScrolledText(receivers_text_frame, height=8)
-        self.receivers_text.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.receivers_text = scrolledtext.ScrolledText(
+            receivers_text_frame, height=8)
+        self.receivers_text.grid(
+            row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
 
         # 邮件内容区域
         content_frame = ttk.LabelFrame(main_frame, text="邮件内容", padding="5")
@@ -180,12 +186,13 @@ class EmailSenderGUI:
         ).pack(side=tk.LEFT, padx=(10, 0))
 
         # 签名预览
-        self.signature_label = ttk.Label(language_frame, text="", foreground="white")
+        self.signature_label = ttk.Label(language_frame, text="")
         self.signature_label.pack(side=tk.RIGHT)
 
         ttk.Label(content_frame, text="主题:").grid(row=1, column=0, sticky=tk.W)
         self.subject_entry = ttk.Entry(content_frame)
-        self.subject_entry.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(5, 10))
+        self.subject_entry.grid(
+            row=1, column=0, sticky=(tk.W, tk.E), pady=(5, 10))
 
         ttk.Label(content_frame, text="正文:").grid(row=2, column=0, sticky=tk.W)
         self.content_text = scrolledtext.ScrolledText(content_frame, height=10)
@@ -258,7 +265,8 @@ class EmailSenderGUI:
                 self.signature_label.config(text="请输入中文名称、邮件主题和邮件正文")
         else:
             if english_name:
-                self.signature_label.config(text=f"Signature will use: {english_name}")
+                self.signature_label.config(
+                    text=f"Signature will use: {english_name}")
             else:
                 self.signature_label.config(
                     text="Please enter English name、subject and content"
@@ -290,7 +298,8 @@ class EmailSenderGUI:
                 content = f.read()
 
             # 处理内容，过滤空行
-            emails = [line.strip() for line in content.split("\n") if line.strip()]
+            emails = [line.strip()
+                      for line in content.split("\n") if line.strip()]
 
             self.receivers_text.config(state="normal")
             self.receivers_text.delete("1.0", tk.END)
@@ -310,7 +319,8 @@ class EmailSenderGUI:
             df = pd.read_excel(file_path)
 
             # 检查是否有email列
-            email_columns = [col for col in df.columns if "email" in col.lower()]
+            email_columns = [
+                col for col in df.columns if "email" in col.lower()]
             if not email_columns:
                 messagebox.showerror(
                     "错误", "Excel文件中未找到'email'列\n请确保有一列名为'email'的数据"
@@ -366,7 +376,8 @@ class EmailSenderGUI:
                 with open(self.config_file, "r", encoding="utf-8") as f:
                     config = json.load(f)
                 self.sender_email.insert(0, config.get("sender_email", ""))
-                self.sender_password.insert(0, config.get("sender_password", ""))
+                self.sender_password.insert(
+                    0, config.get("sender_password", ""))
                 self.chinese_name.insert(0, config.get("chinese_name", ""))
                 self.english_name.insert(0, config.get("english_name", ""))
 
@@ -392,7 +403,8 @@ class EmailSenderGUI:
     def test_connection(self):
         """测试SMTP连接"""
         try:
-            server = smtplib.SMTP(self.smtp_server_value, int(self.smtp_port_value))
+            server = smtplib.SMTP(self.smtp_server_value,
+                                  int(self.smtp_port_value))
             server.starttls()
             server.login(self.sender_email.get(), self.sender_password.get())
             server.quit()
@@ -423,7 +435,8 @@ class EmailSenderGUI:
         """发送邮件的核心函数"""
         try:
             # 连接SMTP服务器
-            server = smtplib.SMTP(self.smtp_server_value, int(self.smtp_port_value))
+            server = smtplib.SMTP(self.smtp_server_value,
+                                  int(self.smtp_port_value))
             server.starttls()
             server.login(self.sender_email.get(), self.sender_password.get())
 

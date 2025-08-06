@@ -33,7 +33,7 @@ jobs:
 
       - name: Build EXE with PyInstaller
         run: |
-          uvx pyinstaller --clean -y fox-tools.spec --log-level=DEBUG
+          uv run pyinstaller --onefile --windowed --name="fox-tools" --icon=icon.ico gui.py
 
       - name: Upload artifact (EXE)
         uses: actions/upload-artifact@v4
