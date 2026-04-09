@@ -346,10 +346,11 @@ class EmailSenderGUI:
                 text=f"已从Excel文件加载 {len(valid_emails)} 个邮箱地址 (使用列: {email_column})"
             )
 
-        except ImportError:
+        except ImportError as e:
             messagebox.showerror(
                 "错误",
-                "需要安装pandas库来读取Excel文件\n请运行: pip install pandas openpyxl",
+                f"读取Excel依赖缺失：{str(e)}\n"
+                "请确认打包环境已安装并打包 pandas、openpyxl、numpy。",
             )
         except Exception as e:
             messagebox.showerror("错误", f"读取Excel文件失败: {str(e)}")

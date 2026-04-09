@@ -1,12 +1,24 @@
 # -*- mode: python ; coding: utf-8 -*-
+import sys
+from PyInstaller.utils.hooks import collect_all
 
+
+datas = []
+binaries = []
+hiddenimports = []
+
+for pkg in ("pandas", "numpy", "openpyxl", "PIL"):
+    pkg_datas, pkg_binaries, pkg_hiddenimports = collect_all(pkg)
+    datas += pkg_datas
+    binaries += pkg_binaries
+    hiddenimports += pkg_hiddenimports
 
 a = Analysis(
-    ['gui.py'],
+    ["gui.py"],
     pathex=[],
-    binaries=[],
-    datas=[],
-    hiddenimports=["openpyxl", "pandas", "pillow"],
+    binaries=binaries,
+    datas=datas,
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -22,7 +34,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='fox-tools',
+    name="fox-tools",
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -35,11 +47,13 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['icon.ico'],
+    icon=["icon.ico"],
 )
-app = BUNDLE(
-    exe,
-    name='fox-tools.app',
-    icon='icon.ico',
-    bundle_identifier=None,
-)
+
+if sys.platform == "darwin":
+    app = BUNDLE(
+        exe,
+        name="fox-tools.app",
+        icon="icon.ico",
+        bundle_identifier=None,
+    )
